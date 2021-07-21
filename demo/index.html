@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      background: #fafafa;
+    }
+  </style>
+</head>
+<body>
+  <div id="demo"></div>
+
+  <script type="module">
+    import { html, render } from '@skhemata/skhemata-base';
+    import '../dist/skhemata-blog.js';
+
+    const apiWordpress = {
+      url: 'https://wp.devradius.com/wp-json/wp/v2'
+    }
+
+    render(
+      html`
+        <skhemata-blog blog-title="DevRadius Blog"
+        .apiWordpress=${apiWordpress}
+        blog-page-path="demo"
+        blog-post-path="post"
+        posts-per-page="10">
+        </skhemata-blog>
+      `,
+      document.querySelector('#demo')
+    );
+  </script>
+</body>
+</html>
