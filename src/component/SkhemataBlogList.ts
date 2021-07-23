@@ -110,7 +110,7 @@ export class SkhemataBlogList extends SkhemataBase {
     if(changedProperties.has('apiWordpress')){
       this.getPosts();
     }
-    if(changedProperties.has('postPerPage')){
+    if(changedProperties.has('postsPerPage')){
       this.getPosts();
     }
     if(changedProperties.has('pagerType')){
