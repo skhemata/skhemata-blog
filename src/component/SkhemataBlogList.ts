@@ -110,6 +110,12 @@ export class SkhemataBlogList extends SkhemataBase {
     if(changedProperties.has('apiWordpress')){
       this.getPosts();
     }
+    if(changedProperties.has('postPerPage')){
+      this.getPosts();
+    }
+    if(changedProperties.has('pagerType')){
+      this.getPosts();
+    }
     super.willUpdate(changedProperties);
   }
 
@@ -180,7 +186,13 @@ export class SkhemataBlogList extends SkhemataBase {
       count += 1;
     }
 
-    const pagination = html`<div class="traditional-pager">${previous}${previousPages}<button @click="" class="button" ><b>${page}</b></button>${nextPages}${next}</div>`;
+    let pagination = html``;
+    if (this.totalPages > 1) {
+      pagination = html`
+      <div class="traditional-pager">
+      ${previous}${previousPages}<button @click="" class="button" ><b>${page}</b></button>${nextPages}${next}
+      </div>`;
+    }
 
     return html`
       ${this.blogFeatures.map(
@@ -669,7 +681,6 @@ export class SkhemataBlogList extends SkhemataBase {
         }
       })
       .then(response => {
-        console.log(response);
         // Set page to 1 if invalid page number.
         if(response.code && response.code === "rest_post_invalid_page_number") {
           this.setPageNumber(1);

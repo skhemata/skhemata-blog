@@ -15,6 +15,7 @@ export default {
   argTypes: {
     apiWordpress: argTypes.apiWordpress,
     postsPerPage: argTypes.postsPerPage,
+    pagerType: argTypes.pagerType,
     blogPagePath: argTypes.blogPagePath,
     slug: argTypes.slug,
     navigate: argTypes.navigate,
@@ -32,6 +33,7 @@ const Template: Story<ArgTypes> = ({
   },
   blogPagePath = '',
   postsPerPage = 10,
+  pagerType = 'infinite',
   slug = '',
   skhemataBlogTextColor,
   skhemataBlogLinkColor,
@@ -52,6 +54,7 @@ const Template: Story<ArgTypes> = ({
     .apiWordpress=${apiWordpress}
     .blogPagePath=${blogPagePath}
     .postsPerPage=${postsPerPage}
+    .pagerType=${pagerType}
     .slug=${slug}
   >
   </skhemata-blog>
@@ -62,7 +65,8 @@ Example.args = {
   apiWordpress: {
     url: 'https://wp.thrinacia.com/wp-json/wp/v2'
   },
-  postsPerPage: 10
+  postsPerPage: 10,
+  pagerType: "infinite",
 };
 
 Example.parameters = {
@@ -73,6 +77,7 @@ Example.parameters = {
   api-wordpress="${JSON.stringify(Example.args.apiWordpress, null, 2).replace(/"/g, '\\"')}"
   blog-page-path=""
   posts-per-page="${Example.args.postsPerPage}"
+  pager-type="${Example.args.pagerType}"
   slug=""
 >
 </skhemata-blog>
