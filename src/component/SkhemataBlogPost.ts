@@ -216,7 +216,7 @@ export class SkhemataBlogPost extends SkhemataBase {
                   )
                 : ''}
             </div>
-            <div class="column is-half has-text-right">
+            <div class="column is-half has-text-right-desktop">
               <fa-icon .icon=${faTag}></fa-icon>
               ${this.getStr('SkhemataBlogPost.tags')}:
               ${this.blogPost.tags
