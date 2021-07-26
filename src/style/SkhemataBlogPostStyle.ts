@@ -159,4 +159,9 @@ export const SkhemataBlogPostStyle = css`
   .blog-post-title.title {
     color: var(--skhemata-blog-post-heading-color, rgb(54, 54, 54));
   }
+
+  .blog-post-content.content {
+    overflow: hidden;
+    wordwrap: break-word;
+  }
 `;
