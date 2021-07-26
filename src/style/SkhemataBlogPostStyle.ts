@@ -162,6 +162,6 @@ export const SkhemataBlogPostStyle = css`
 
   .blog-post-content.content {
     overflow: hidden;
-    wordwrap: break-word;
+    word-wrap: break-word;
   }
 `;
