@@ -5,7 +5,7 @@
  * */
 
 // Import litelement base class, html helper function & typescript decorators
-import { html, CSSResult, SkhemataBase, property } from '@skhemata/skhemata-base';
+import { html, css, CSSResult, SkhemataBase, property } from '@skhemata/skhemata-base';
 
 import {
   faCalendarAlt,
@@ -40,6 +40,12 @@ export class SkhemataBlogList extends SkhemataBase {
   @property({ type: Number, attribute: 'posts-per-page' })
   postsPerPage = 4;
 
+  @property({ type: String, attribute: 'pager-type' })
+  pagerType = "infinite";
+
+  @property({ type: Number})
+  currentPage = 1;
+
   @property({ type: String })
   searchedBlogPosts = '';
 
@@ -70,6 +76,11 @@ export class SkhemataBlogList extends SkhemataBase {
       super.styles,
       SkhemataBlogListStyle,
       SkhemataBlogSharedStyle,
+      css`
+        .traditional-pager {
+          text-align: center;
+        }
+      `
     ];
   }
 
@@ -85,7 +96,11 @@ export class SkhemataBlogList extends SkhemataBase {
     window.addEventListener(
       'popstate',
       () => {
-        this.getPosts();
+        if(this.pagerType === "traditional") {
+          this.loadPostPage();
+        } else {
+          this.getPosts();
+        }
       },
       false
     );
@@ -93,6 +108,12 @@ export class SkhemataBlogList extends SkhemataBase {
 
   willUpdate(changedProperties: Map<string, any>){
     if(changedProperties.has('apiWordpress')){
+      this.getPosts();
+    }
+    if(changedProperties.has('postsPerPage')){
+      this.getPosts();
+    }
+    if(changedProperties.has('pagerType')){
       this.getPosts();
     }
     super.willUpdate(changedProperties);
@@ -120,6 +141,59 @@ export class SkhemataBlogList extends SkhemataBase {
    * Use JS template literals
    */
   protected render() {
+    let previous = html``;
+    let next = html``;
+    let previousPages = html``;
+    let nextPages = html``;
+    let count = 1;
+
+    const params = new URLSearchParams(window.location.search);
+    let page = 1;
+    const leadingTrailingCount = 3;
+    const pParam = params.get('p');
+    
+    if(pParam != null && !Number.isNaN(pParam) ) {
+      const pageParam = parseInt(pParam, 10);
+      page = pageParam;
+    }
+
+    previous = html`<button @click="${() => this.setPageNumber(1)}" class="button" > First </button>
+    <button @click="${() => this.setPageNumber(page-1)}" class="button" > Previous </button>`;
+    if (page <= 1) {
+      previous = html``;
+    }
+    
+    next = html`<button @click="${() => this.setPageNumber(page+1)}" class="button" > Next </button>
+    <button @click="${() => this.setPageNumber(this.totalPages)}" class="button" > Last </button>`;
+    if (page >= this.totalPages) {
+      next = html``;
+    }
+    
+    for (let index = page; index > 1; index -= 1) {
+      if(count > leadingTrailingCount) {
+        break;
+      }
+      previousPages = html`<button @click="${(event: any) => this.goToButtonPage(event)}" page-value="${page-count}"  class="button" >${page-count}</button>${previousPages}`;
+      count += 1;
+    }
+    
+    count = 1;
+    for (let index = page; index < this.totalPages; index += 1) {
+      if(count > leadingTrailingCount) {
+        break;
+      }
+      nextPages = html`${nextPages}<button @click="${(event: any) => this.goToButtonPage(event)}" page-value="${page+count}" class="button" >${page+count}</button>`;
+      count += 1;
+    }
+
+    let pagination = html``;
+    if (this.totalPages > 1) {
+      pagination = html`
+      <div class="traditional-pager">
+      ${previous}${previousPages}<button @click="" class="button" ><b>${page}</b></button>${nextPages}${next}
+      </div>`;
+    }
+
     return html`
       ${this.blogFeatures.map(
         (post: any) =>
@@ -294,13 +368,16 @@ export class SkhemataBlogList extends SkhemataBase {
         )}
       </div>
 
-      <div class="load-more-button">
-        ${this.count < this.maxLoadCount
-          ? html`<button @click="${this.loadMorePosts}" class="button">
-              ${this.getStr('SkhemataBlogList.showMoreButton')}
-            </button>`
-          : ``}
-      </div>
+      ${(this.pagerType === "traditional") ? 
+        pagination : 
+        html`<div class="load-more-button">
+          ${this.count < this.maxLoadCount
+            ? html`<button @click="${this.loadMorePosts}" class="button">
+                ${this.getStr('SkhemataBlogList.showMoreButton')}
+              </button>`
+            : ``}
+        </div>`
+      }
     `;
   }
 
@@ -526,4 +603,92 @@ export class SkhemataBlogList extends SkhemataBase {
 
   cleanExcerpt = (excerpt: string = '') =>
     excerpt.replace(/<a.*>.*?.<\/span>/g, '');
+
+    
+  private goToButtonPage(event: any) {
+    let page = 1;
+    const buttonValue = event.target.attributes["page-value"].value;
+    if(buttonValue != null) {
+      page = parseInt(buttonValue, 10);
+    }
+    this.setPageNumber(page);
+  }
+
+  private setPageNumber(page: any) {
+    let setPage = page;
+    if(setPage < 1) {
+      setPage = 1;
+    }
+    if(setPage > this.totalPages) {
+      setPage = this.totalPages;
+    }
+    const params = new URLSearchParams(window.location.search);
+    params.set('p', setPage);
+    this.currentPage = setPage;
+    window.history.pushState(
+      {},
+      '',
+      `/${this.blogPagePath}?${params.toString()}`
+    );
+    window.dispatchEvent(new Event('popstate'));
+  }
+
+  private loadPostPage() {
+    const params = new URLSearchParams(window.location.search);
+    const page = params.get('p');
+
+    const search = params.get('s');
+    const category = params.get('c');
+    const author = params.get('a');
+    const tag = params.get('t');
+
+    let tagParams = '';
+    let searchParams = '';
+    let categoryParams = '';
+    let authorParams = '';
+    const orderbyParam = `&orderby=relevance`;
+
+    if (search && search.length > 3) {
+      searchParams = `&search=${search}${orderbyParam}`;
+    }
+    if (category) {
+      categoryParams = `&categories=${category}`;
+    }
+    if (author) {
+      authorParams = `&author=${author}`;
+    }
+    if (tag) {
+      tagParams = `&tags=${tag}`;
+    }
+    fetch(
+      `${this.apiWordpress.url}/posts?_embed&page=${page}${searchParams}${categoryParams}${authorParams}${tagParams}&per_page=${this.postsPerPage}`
+    )
+      .then(response => {
+        if(response.status === 200) {
+          this.totalPages = Number(response.headers.get('X-WP-TotalPages'));
+          this.totalCount = Number(response.headers.get('X-WP-Total'));
+          const contentType = response.headers.get('Content-Type');
+
+          this.maxLoadCount = Math.ceil(this.totalCount/10);
+          // Check if response header content type is json
+          if (contentType && contentType.includes('application/json')) {
+            return response.json();
+          }
+          // Throw error if above condition isn't met
+          throw new TypeError('The format is not JSON.');
+        } else {
+          return response.json();
+        }
+      })
+      .then(response => {
+        // Set page to 1 if invalid page number.
+        if(response.code && response.code === "rest_post_invalid_page_number") {
+          this.setPageNumber(1);
+        } else if (!response.code && typeof response !== 'undefined') {
+          this.blogPosts = response.map(SkhemataBlogList.formatCategories);
+        }
+      });
+  }
 }
+
+

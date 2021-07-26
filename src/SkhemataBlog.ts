@@ -27,6 +27,9 @@ export class SkhemataBlog extends SkhemataBase {
 
   @property({ type: Number, attribute: 'posts-per-page' })
   postsPerPage = 4;
+  
+  @property({ type: String, attribute: 'pager-type' })
+  pagerType = "infinite";
 
   @property({ type: String })
   searchedBlogPosts = '';
@@ -138,6 +141,7 @@ export class SkhemataBlog extends SkhemataBase {
                   .blogPagePath=${this.blogPagePath}
                   .searchedBlogPosts=${this.searchedBlogPosts}
                   .postsPerPage=${this.postsPerPage}
+                  .pagerType=${this.pagerType}
                   @navigate=${this.handleNavigate}
                   .translationDir=${this.translationDir}
                   .translationData=${this.translationData}
