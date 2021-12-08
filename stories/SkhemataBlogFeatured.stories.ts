@@ -73,7 +73,7 @@ interface SkhemataBlogFeaturedArgTypes extends ArgTypes {
 
 const Template: Story<SkhemataBlogFeaturedArgTypes> = ({
   apiWordpress = {
-    url: 'https://wp.thrinacia.com/wp-json/wp/v2',
+    url: 'https://wp.skhemata.com/wp-json/wp/v2',
   },
   skhemataBlogTextColor,
   skhemataBlogFeaturedTitleColor,
@@ -101,7 +101,7 @@ const Template: Story<SkhemataBlogFeaturedArgTypes> = ({
 export const Example = Template.bind({});
 Example.args = {
   apiWordpress: {
-    url: 'https://wp.thrinacia.com/wp-json/wp/v2'
+    url: 'https://wp.skhemata.com/wp-json/wp/v2'
   },
 }
 Example.parameters = {

@@ -64,7 +64,7 @@ interface SkhemataBlogPostArgTypes extends ArgTypes {
 
 const Template: Story<SkhemataBlogPostArgTypes> = ({
   apiWordpress = {
-    url: 'https://wp.thrinacia.com/wp-json/wp/v2'
+    url: 'https://wp.skhemata.com/wp-json/wp/v2'
   },
   blogPagePath = '',
   slug = 'creating-a-crowdfunding-marketplace-for-no-code-entrepreneurs',
@@ -97,7 +97,7 @@ const Template: Story<SkhemataBlogPostArgTypes> = ({
 export const Example = Template.bind({});
 Example.args = {
   apiWordpress: {
-    url: 'https://wp.thrinacia.com/wp-json/wp/v2'
+    url: 'https://wp.skhemata.com/wp-json/wp/v2'
   },
   slug: 'creating-a-crowdfunding-marketplace-for-no-code-entrepreneurs',
 }

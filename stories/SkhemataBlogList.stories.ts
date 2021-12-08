@@ -18,7 +18,7 @@ export default {
 
 const Template: Story<ArgTypes> = ({
   apiWordpress = {
-    url: 'https://wp.thrinacia.com/wp-json/wp/v2'
+    url: 'https://wp.skhemata.com/wp-json/wp/v2'
   },
   postsPerPage = 10,
   pagerType = 'infinite',
@@ -44,7 +44,7 @@ const Template: Story<ArgTypes> = ({
 export const Example = Template.bind({});
 Example.args = {
   apiWordpress: {
-    url: 'https://wp.thrinacia.com/wp-json/wp/v2'
+    url: 'https://wp.skhemata.com/wp-json/wp/v2'
   },
   postsPerPage: 10,
   pagerType: "infinite",

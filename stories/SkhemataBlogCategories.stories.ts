@@ -21,7 +21,7 @@ interface SkhemataBlogCategoriesArgTypes extends ArgTypes {
 
 const Template: Story<SkhemataBlogCategoriesArgTypes> = ({
   apiWordpress = {
-    url: 'https://wp.thrinacia.com/wp-json/wp/v2'
+    url: 'https://wp.skhemata.com/wp-json/wp/v2'
   },
   blogPagePath = '',
   skhemataBlogCategoriesTextColor,
@@ -43,7 +43,7 @@ const Template: Story<SkhemataBlogCategoriesArgTypes> = ({
 export const Example = Template.bind({});
 Example.args = {
   apiWordpress: {
-    url: 'https://wp.thrinacia.com/wp-json/wp/v2'
+    url: 'https://wp.skhemata.com/wp-json/wp/v2'
   },
 }
 Example.parameters = {
