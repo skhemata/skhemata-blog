@@ -39,7 +39,7 @@ export class SkhemataBlogCategories extends SkhemataBase {
 
   @property({ type: String })
   categoryTopBtnImage =
-    'https://cdn2.thrinacia.com/www.thrinacia.com/img/cosmic_landing_bg.png';
+    'https://cdn.skhemata.com/www.skhemata.com/img/cosmic_landing_bg.png';
 
   @property({ type: Object })
   translationData = {
