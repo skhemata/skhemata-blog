@@ -1,6 +1,6 @@
 {
   "name": "@skhemata/skhemata-blog",
-  "version": "1.2.5",
+  "version": "1.3.0",
   "description": "Skhemata Blog Web Component. This web component provides several sub components in addition to main component, allowing featured blogs, blog listing and blog post display.",
   "author": "skhemata-blog",
   "license": "https://raw.githubusercontent.com/skhemata/skhemata-blog/master/LICENSE",
