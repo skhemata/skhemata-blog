@@ -16,16 +16,22 @@
     import '../dist/skhemata-blog.js';
 
     const apiWordpress = {
-      url: 'https://wp.devradius.com/wp-json/wp/v2'
+      // url: 'https://wp.devradius.com/wp-json/wp/v2'
+      url: 'https://wp.skhemata.com/wp-json/wp/v2'
     }
+
+    // .apiWordpress=${apiWordpress}
 
     render(
       html`
-        <skhemata-blog blog-title="DevRadius Blog"
-        .apiWordpress=${apiWordpress}
-        blog-page-path="demo"
-        blog-post-path="post"
-        posts-per-page="10">
+        <skhemata-blog 
+          blog-title="DevRadius Blog"
+          blog-page-path="demo"
+          blog-post-path="post"
+          posts-per-page="10"
+          new-check="checking..."
+          api-wordpress='{"url": "https://wp.skhemata.com/wp-json/wp/v2"}'
+          >
         </skhemata-blog>
       `,
       document.querySelector('#demo')
