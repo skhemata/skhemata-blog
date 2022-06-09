@@ -24,7 +24,20 @@ export default {
     skhemataBlogListTitleColor,
     skhemataBlogCategoriesTextColor,
     skhemataBlogCategoriesBackgroundColor
-  }
+  },
+  parameters: {
+    widgetCode: `
+      <skhemata-blog 
+      blog-title="DevRadius Blog"
+      blog-page-path="demo"
+      blog-post-path="post"
+      posts-per-page="10"
+      api-wordpress='{"url": "https://wp.skhemata.com/wp-json/wp/v2"}'
+      ></skhemata-blog>
+
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@skhemata/skhemata-blog@latest/build/index.js"></script> 
+    `,
+  },
 };
 
 const Template: Story<ArgTypes> = ({
